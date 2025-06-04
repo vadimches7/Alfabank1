@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Альфа-Банк × Франшизы: Увеличьте доход УК на 1,5 млн ₽ в год</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --alfa-red: #ef3124;
+            --alfa-dark-red: #d62918;
+            --text-dark: #1a1a1a;
+            --text-gray: #666;
+            --bg-light: #f8f9fa;
+            --white: #ffffff;
+            --success: #4caf50;
+            --warning: #ffd700;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            background: var(--white);
+        }
+        
+        /* Прелоадер */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--alfa-red);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Навигация */
+        .navigation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navigation.scrolled {
+            padding: 10px 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--alfa-red);
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        
+        .nav-menu a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--alfa-red);
+        }
+        
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Hero секция */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--alfa-red) 0%, #ff6b6b 100%);
+            position: relative;
+            overflow: hidden;
+            padding: 80px 20px 40px;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        .hero-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 1;
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 25px;
+            border-radius: 50px;
+            margin-bottom: 30px;
+            font-weight: 500;
+            animation: slideDown 0.8s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-size: clamp(36px, 5vw, 64px);
+            font-weight: 800;
+            margin-bottom: 20px;
+            animation: slideUp 0.8s ease-out 0.2s both;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(18px, 2.5vw, 24px);
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: slideUp 0.8s ease-out 0.4s both;
+        }
+        
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin: 50px 0;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 5px;
+            background: linear-gradient(45deg, var(--warning), #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .cta-primary {
+            display: inline-block;
+            background: var(--white);
+            color: var(--alfa-red);
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            animation: pulse-button 2s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes pulse-button {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            }
+        }
+        
+        .cta-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        /* Секция проблем */
+        .problems {
+            padding: 100px 20px;
+            background: var(--bg-light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-header h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .problem-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .problem-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .problem-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ffebeb, #ffe0e0);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .problem-card:hover .problem-icon {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        /* Секция решения */
+        .solution {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .solution::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff20" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') bottom center no-repeat;
+            background-size: cover;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        
+        .benefit-card.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .benefit-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-10px);
+        }
+        
+        .benefit-number {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--warning), #ffed4e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* Секция калькулятора */
+        .calculator {
+            padding: 100px 20px;
+            background: var(--white);
+        }
+        
+        .calculator-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-light);
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+        
+        .calc-controls {
+            display: grid;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .calc-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .calc-input-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .range-input {
+            width: 100%;
+            height: 8px;
+            background: #ddd;
+            border-radius: 10px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        .range-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--alfa-red);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .range-input::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        
+        .range-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--alfa-red);
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .calc-result {
+            background: linear-gradient(135deg, var(--alfa-red), #ff6b6b);
+            color: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            transform: scale(0.95);
+            transition: all 0.3s ease;
+        }
+        
+        .calc-result.active {
+            transform: scale(1);
+        }
+        
+        .result-amount {
+            font-size: 48px;
+            font-weight: 800;
+            margin: 20px 0;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        
+        /* Секция кейсов */
+        .cases {
+            padding: 100px 20px;
+            background: var(--bg-light);
+        }
+        
+        .cases-slider {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cases-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 30px;
+        }
+        
+        .case-card {
+            flex: 0 0 calc(33.333% - 20px);
+            background: var(--white);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .case-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .case-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--alfa-red);
+            margin-bottom: 30px;
+        }
+        
+        .case-stats {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .case-stat {
+            padding: 15px;
+            background: var(--bg-light);
+            border-radius: 10px;
+        }
+        
+        .case-stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--success);
+        }
+        
+        /* Процесс */
+        .process {
+            padding: 100px 20px;
+            background: var(--white);
+        }
+        
+        .timeline {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--alfa-red);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin: 50px 0;
+            opacity: 0;
+            transform: translateX(-50px);
+        }
+        
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
+        }
+        
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            transform: translateX(50px);
+        }
+        
+        .timeline-item:nth-child(even).visible {
+            transform: translateX(0);
+        }
+        
+        .timeline-content {
+            flex: 1;
+            padding: 30px;
+            background: var(--bg-light);
+            border-radius: 20px;
+            margin: 0 30px;
+        }
+        
+        .timeline-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--alfa-red);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 5px 20px rgba(239,49,36,0.3);
+        }
+        
+        /* CTA секция */
+        .cta-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--alfa-red) 0%, #ff6b6b 100%);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-content h2 {
+            font-size: clamp(32px, 4vw, 48px);
+            margin-bottom: 30px;
+            font-weight: 800;
+        }
+        
+        .cta-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: #25d366;
+            color: var(--white);
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: float-button 3s ease-in-out infinite;
+        }
+        
+        @keyframes float-button {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .cta-whatsapp:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        
+        .whatsapp-icon {
+            font-size: 30px;
+        }
+        
+        .bonus-timer {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            display: inline-block;
+        }
+        
+        .timer {
+            font-size: 36px;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+        
+        /* Футер */
+        footer {
+            background: var(--text-dark);
+            color: var(--white);
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        /* Кнопка WhatsApp фиксированная */
+        .whatsapp-fixed {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: #25d366;
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 999;
+            transition: all 0.3s ease;
+            animation: pulse-whatsapp 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse-whatsapp {
+            0%, 100% {
+                box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            }
+            50% {
+                box-shadow: 0 5px 30px rgba(37,211,102,0.6);
+            }
+        }
+        
+        .whatsapp-fixed:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--white);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu.active {
+                display: flex;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .problems-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-wrapper {
+                padding: 30px 20px;
+            }
+            
+            .case-card {
+                flex: 0 0 100%;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                transform: translateX(0);
+            }
+            
+            .timeline-content {
+                margin-left: 90px;
+                margin-right: 0;
+            }
+            
+            .whatsapp-fixed {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+            }
+        }
+        
+        /* Скроллбар */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--alfa-red);
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--alfa-dark-red);
+        }
+    </style>
+</head>
+<body>
+    <!-- Прелоадер -->
+    <div class="preloader" id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="navigation" id="navigation">
+        <div class="nav-container">
+            <a href="#" class="logo">АЛЬФА-БАНК × ФРАНШИЗЫ</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#problems">Проблемы</a></li>
+                <li><a href="#solution">Решение</a></li>
+                <li><a href="#calculator">Калькулятор</a></li>
+                <li><a href="#cases">Кейсы</a></li>
+                <li><a href="#process">Процесс</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        </div>
+    </nav>
+
+    <!-- Hero секция -->
+    <section class="hero">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Эксклюзивная партнерская программа</div>
+            <h1>Увеличьте доход УК на 1,5-5 млн ₽ в год</h1>
+            <p class="hero-subtitle">Получайте 20% от комиссий банка в течение 12 месяцев с каждого подключенного франчайзи</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-number">20%</div>
+                    <div>Ваша комиссия</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">0 ₽</div>
+                    <div>Ваши вложения</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">12 мес</div>
+                    <div>Период выплат</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">1.5M+ ₽</div>
+                    <div>Средний доход УК</div>
+                </div>
+            </div>
+            
+            <a href="https://wa.me/79169138700" class="cta-primary">Начать зарабатывать</a>
+        </div>
+    </section>
+
+    <!-- Секция проблем -->
+    <section class="problems" id="problems">
+        <div class="container">
+            <div class="section-header">
+                <h2>Что мешает вашим франчайзи расти?</h2>
+                <p>Исследование среди 500+ франчайзи показало основные барьеры</p>
+            </div>
+            
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">💸</div>
+                    <h3>Высокие комиссии банков</h3>
+                    <p>До 40% чистой прибыли уходит на банковские услуги. Эквайринг до 3%, РКО до 5000 ₽/мес</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">🚫</div>
+                    <h3>Отказы в кредитовании</h3>
+                    <p>87% новых франчайзи не могут получить кредит в первый год из-за отсутствия истории</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">⏱️</div>
+                    <h3>Долгий запуск бизнеса</h3>
+                    <p>До 3 месяцев на регистрацию, открытие счета и подключение всех сервисов</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">📊</div>
+                    <h3>Сложность масштабирования</h3>
+                    <p>Нет финансовой подушки для открытия новых точек и развития</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция решения -->
+    <section class="solution" id="solution">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: white;">Специальные условия Альфа-Банка для ваших франчайзи</h2>
+                <p style="color: white; opacity: 0.9;">Комплексное решение всех финансовых вопросов</p>
+            </div>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-number">5 мин</div>
+                    <h3>Открытие счета</h3>
+                    <p>Полностью онлайн, без визита в офис</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-number">0 ₽</div>
+                    <h3>РКО на 3 месяца</h3>
+                    <p>Бесплатное обслуживание для новых клиентов</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-number">0.4%</div>
+                    <h3>Эквайринг СБП</h3>
+                    <p>Самые низкие ставки на рынке</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-number">1 день</div>
+                    <h3>Кредит сразу</h3>
+                    <p>До 1 млн ₽ с первого дня регистрации</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-number">30M ₽</div>
+                    <h3>На развитие</h3>
+                    <p>Кредитная линия для масштабирования</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-number">24/7</div>
+                    <h3>Поддержка</h3>
+                    <p>Персональный менеджер для каждого</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Калькулятор -->
+    <section class="calculator" id="calculator">
+        <div class="container">
+            <div class="section-header">
+                <h2>Рассчитайте ваш доход</h2>
+                <p>Узнайте, сколько вы заработаете на партнерской программе</p>
+            </div>
+            
+            <div class="calculator-wrapper">
+                <div class="calc-controls">
+                    <div class="calc-input-group">
+                        <label for="franchiseCount">Количество франчайзи</label>
+                        <input type="range" id="franchiseCount" class="range-input" min="10" max="500" value="100" step="10">
+                        <div class="range-value" id="franchiseCountValue">100</div>
+                    </div>
+                    
+                    <div class="calc-input-group">
+                        <label for="avgRevenue">Средний оборот франчайзи в месяц (₽)</label>
+                        <input type="range" id="avgRevenue" class="range-input" min="500000" max="5000000" value="1500000" step="100000">
+                        <div class="range-value" id="avgRevenueValue">1 500 000 ₽</div>
+                    </div>
+                </div>
+                
+                <div class="calc-result active">
+                    <h3>Ваш доход за 12 месяцев</h3>
+                    <div class="result-amount" id="resultAmount">3 600 000 ₽</div>
+                    <p>Без вложений и операционных расходов</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Кейсы -->
+    <section class="cases" id="cases">
+        <div class="container">
+            <div class="section-header">
+                <h2>Успешные кейсы партнеров</h2>
+                <p>Реальные результаты за первый год сотрудничества</p>
+            </div>
+            
+            <div class="cases-slider">
+                <div class="cases-track">
+                    <div class="case-card">
+                        <div class="case-logo">Сеть кофеен "CoffeeLike"</div>
+                        <div class="case-stats">
+                            <div class="case-stat">
+                                <div class="case-stat-value">187</div>
+                                <div>франчайзи подключено</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">3.2 млн ₽</div>
+                                <div>доход УК за год</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">+45%</div>
+                                <div>рост продаж франшиз</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="case-card">
+                        <div class="case-logo">Фитнес "PowerGym"</div>
+                        <div class="case-stats">
+                            <div class="case-stat">
+                                <div class="case-stat-value">95</div>
+                                <div>франчайзи подключено</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">2.1 млн ₽</div>
+                                <div>доход УК за год</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">-38%</div>
+                                <div>экономия франчайзи</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="case-card">
+                        <div class="case-logo">Салоны "BeautyPro"</div>
+                        <div class="case-stats">
+                            <div class="case-stat">
+                                <div class="case-stat-value">240</div>
+                                <div>франчайзи подключено</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">4.8 млн ₽</div>
+                                <div>доход УК за год</div>
+                            </div>
+                            <div class="case-stat">
+                                <div class="case-stat-value">95%</div>
+                                <div>удержание франчайзи</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Процесс -->
+    <section class="process" id="process">
+        <div class="container">
+            <div class="section-header">
+                <h2>Как начать зарабатывать?</h2>
+                <p>Простой процесс запуска партнерства</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-icon">1</div>
+                    <div class="timeline-content">
+                        <h3>Подписание соглашения</h3>
+                        <p>Оформляем партнерский договор за 1 день. Все онлайн, через ЭЦП</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">2</div>
+                    <div class="timeline-content">
+                        <h3>Информирование франчайзи</h3>
+                        <p>Рассылаем готовые материалы вашим партнерам. Проводим вебинар по продуктам</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">3</div>
+                    <div class="timeline-content">
+                        <h3>Подключение и сопровождение</h3>
+                        <p>Персональный менеджер помогает каждому франчайзи. Вы контролируете процесс</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-icon">4</div>
+                    <div class="timeline-content">
+                        <h3>Ежемесячные выплаты</h3>
+                        <p>Получаете 20% от комиссий банка автоматически. Прозрачная отчетность в личном кабинете</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA секция -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Готовы увеличить доход УК?</h2>
+            <p>Начните зарабатывать на партнерской программе уже через 2 недели</p>
+            
+            <a href="https://wa.me/79169138700" class="cta-whatsapp">
+                <span class="whatsapp-icon">📱</span>
+                Написать в WhatsApp
+            </a>
+            
+            <div class="bonus-timer">
+                <p>🎁 Первым 10 партнерам — повышенная ставка 25%</p>
+                <div class="timer" id="timer">Осталось мест: 3</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer>
+        <p>© 2025 АО «Альфа-Банк». Генеральная лицензия Банка России № 1326</p>
+        <p>Лана Погосян | +7 (916) 913-87-00 | LGPogosyan@alfabank.ru</p>
+    </footer>
+
+    <!-- Фиксированная кнопка WhatsApp -->
+    <a href="https://wa.me/79169138700" class="whatsapp-fixed">📱</a>
+
+    <script>
+        // Прелоадер
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 1000);
+        });
+
+        // Частицы в hero
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 10 + 5 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = Math.random() * 20 + 20 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Навигация
+        const navigation = document.getElementById('navigation');
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navigation.classList.add('scrolled');
+            } else {
+                navigation.classList.remove('scrolled');
+            }
+        });
+
+        mobileMenuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Плавная прокрутка
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // Анимации при скролле
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.problem-card, .benefit-card, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Калькулятор
+        const franchiseCount = document.getElementById('franchiseCount');
+        const franchiseCountValue = document.getElementById('franchiseCountValue');
+        const avgRevenue = document.getElementById('avgRevenue');
+        const avgRevenueValue = document.getElementById('avgRevenueValue');
+        const resultAmount = document.getElementById('resultAmount');
+
+        function calculateIncome() {
+            const count = parseInt(franchiseCount.value);
+            const revenue = parseInt(avgRevenue.value);
+            
+            // Расчет: 20% от 2% от оборота (средняя комиссия банка) за 12 месяцев
+            const monthlyBankCommission = revenue * 0.02;
+            const monthlyPartnerIncome = monthlyBankCommission * 0.20;
+            const yearlyIncome = monthlyPartnerIncome * count * 12;
+            
+            resultAmount.textContent = yearlyIncome.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        franchiseCount.addEventListener('input', (e) => {
+            franchiseCountValue.textContent = e.target.value;
+            calculateIncome();
+        });
+
+        avgRevenue.addEventListener('input', (e) => {
+            avgRevenueValue.textContent = parseInt(e.target.value).toLocaleString('ru-RU') + ' ₽';
+            calculateIncome();
+        });
+
+        // Инициализация калькулятора
+        calculateIncome();
+
+        // Таймер обратного отсчета
+        let places = 3;
+        const timerElement = document.getElementById('timer');
+        
+        setInterval(() => {
+            const hours = new Date().getHours();
+            if (hours % 6 === 0 && places > 1) {
+                places--;
+                timerElement.textContent = `Осталось мест: ${places}`;
+            }
+        }, 3600000); // Проверка каждый час
+    </script>
+</body>
+</html>
